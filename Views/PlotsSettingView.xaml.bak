@@ -1,0 +1,160 @@
+﻿<Window x:Class="ShotgunMetagenome.Views.PlotsSettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+        xmlns:v ="clr-namespace:ShotgunMetagenome.Views.Behavior"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ShotgunMetagenome.ViewModels"
+        mc:Ignorable="d"
+        Title="Plots Setting" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:PlotsSettingViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary Source="StyleResouces.xaml" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <!--  When ContentRendered event raised, Initialize method of ViewModel would be called.  -->
+        <i:EventTrigger EventName="ContentRendered">
+            <l:LivetCallMethodAction MethodName="Initialize" MethodTarget="{Binding}" />
+        </i:EventTrigger>
+
+        <l:InteractionMessageTrigger MessageKey="Close" Messenger="{Binding Messenger, Mode=OneWay}">
+            <l:WindowInteractionMessageAction InvokeActionOnlyWhenWindowIsActive="False"/>
+        </l:InteractionMessageTrigger>
+
+        <!--  Dispose method is called, when Window closing.  -->
+        <i:EventTrigger EventName="Closed">
+            <l:DataContextDisposeAction />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Row="0" Grid.Column="0"
+               VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+               Source="/Img/check.png" />
+
+        <Label Grid.Row="0" Grid.Column="1"
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0"
+                FontSize="32" FontFamily="Meiryo UI" FontWeight="Bold" 
+                Content="analysis settings"
+               />
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                Margin="80,0,100,0" Background="DarkGray"
+                BorderBrush="DarkGray" />
+
+        <Grid  Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Row="0" Grid.Column="0" Background="#f9f8eb"
+                    FontSize="24"
+                    Margin="0,0,100,0"
+                    Header="PCoA ">
+                <StackPanel Orientation="Horizontal" >
+                    <Label  VerticalAlignment="Center" Background="#f9f8eb"
+                        Style="{StaticResource InfoLabel}"
+                        Content="  distance  ">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <l:LivetCallMethodAction MethodName="CallOpenPcoa" MethodTarget="{Binding}" MethodParameter=""/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Label>
+
+                    <ComboBox  
+                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+                        Height="24"  Width="120"
+                        FontSize="16"
+                        ItemsSource="{Binding PcoaDistances}"  SelectedValue="{Binding SelectedPcoaDistance}"  >
+
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="1" Grid.Column="0" Background="#f9f8eb"
+                    FontSize="24"
+                    Margin="0,0,100,0"
+                    Header="NMDS ">
+                <StackPanel Orientation="Horizontal" >
+                    <Label  VerticalAlignment="Center" Background="#f9f8eb"
+                        Style="{StaticResource InfoLabel}"
+                        Content="  distance  ">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <l:LivetCallMethodAction MethodName="CallOpenNmds" MethodTarget="{Binding}" MethodParameter=""/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Label>
+                    <ComboBox  
+                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0"
+                        Height="24"  Width="120"
+                        FontSize="16"
+                        ItemsSource="{Binding NmdsDistances}"  SelectedValue="{Binding SelectedNmdsDistance}"  >
+
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="2" Grid.Column="0" Background="#f9f8eb"
+                    FontSize="24"
+                    Margin="0,0,100,0"
+                    Header="PERMANOVA ">
+                <Label Margin="120,5,0,0"
+                    FontFamily="Comic Sans MS" FontSize="14" FontStyle="Italic"
+                    Content="Not available in this version."/>
+            </GroupBox>
+
+            <Button  Grid.Row="4" Grid.Column="0" 
+                    VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,120,0"
+                     FontSize="16"
+                     FontWeight="Regular"
+                     FontFamily="Georgia"
+                    Style="{StaticResource FlatButton}"
+                    Content="   OK   ">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:LivetCallMethodAction MethodName="CallEndPlotsSetting" MethodTarget="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button  Grid.Row="4" Grid.Column="1" 
+                    VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,20,0"
+                     FontSize="16"
+                     FontWeight="Regular"
+                     FontFamily="Georgia"
+                    Style="{StaticResource FlatButton}"
+                    Content=" Disenable ">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <l:LivetCallMethodAction MethodName="CallEndDisnable" MethodTarget="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,139 @@
+﻿<Window
+    x:Class="ShotgunMetagenome.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+    xmlns:v="clr-namespace:ShotgunMetagenome.Views"
+    xmlns:vm="clr-namespace:ShotgunMetagenome.ViewModels"
+    Title="{Binding Title}"
+    Width="800"
+    Height="740">
+
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary Source="StyleResouces.xaml" />
+    </Window.Resources>
+
+    <i:Interaction.Triggers>
+        <!--  When ContentRendered event raised, Initialize method of ViewModel would be called.  -->
+        <i:EventTrigger EventName="ContentRendered">
+            <l:LivetCallMethodAction MethodName="Initialize" MethodTarget="{Binding}" />
+        </i:EventTrigger>
+
+        <!--  Dispose method is called, when Window closing.  -->
+        <i:EventTrigger EventName="Closed">
+            <l:DataContextDisposeAction />
+        </i:EventTrigger>
+
+        <!--  If you make user choose 'OK or Cancel' closing Window, then please use Window Close cancel Behavior.  -->
+
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Information">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Confirm">
+            <l:ConfirmationDialogInteractionMessageAction />
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="Error">
+            <l:InformationDialogInteractionMessageAction/>
+        </l:InteractionMessageTrigger>
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="WindowAction" >
+            <l:WindowInteractionMessageAction InvokeActionOnlyWhenWindowIsActive="False" />
+        </l:InteractionMessageTrigger>
+
+        <!-- info window -->
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="InformationCommand" >
+            <l:TransitionInteractionMessageAction 
+                WindowType="{x:Type v:InfomationView}" Mode="Modal" IsOwned="False" InvokeActionOnlyWhenWindowIsActive="False"/>
+        </l:InteractionMessageTrigger>
+        <!-- add group window -->
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="AddGoupCommand" >
+            <l:TransitionInteractionMessageAction 
+                WindowType="{x:Type v:AddGroupView}" Mode="Modal" IsOwned="False" InvokeActionOnlyWhenWindowIsActive="False"/>
+        </l:InteractionMessageTrigger>
+        <!-- new group window -->
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="NewGoupCommand" >
+            <l:TransitionInteractionMessageAction 
+                WindowType="{x:Type v:NewGroupView}" Mode="Modal" IsOwned="False" InvokeActionOnlyWhenWindowIsActive="False"/>
+        </l:InteractionMessageTrigger>
+        <!-- plot setting window -->
+        <l:InteractionMessageTrigger Messenger="{Binding Messenger}" MessageKey="PlotsSettingCommand" >
+            <l:TransitionInteractionMessageAction 
+                WindowType="{x:Type v:PlotsSettingView}" Mode="Modal" IsOwned="False" InvokeActionOnlyWhenWindowIsActive="False"/>
+        </l:InteractionMessageTrigger>
+
+    </i:Interaction.Triggers>
+
+
+    <!-- ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"  -->
+    <Grid Background="#ebf6f7" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Row="0" Grid.Column="0"
+                TabStripPlacement="Left" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                SelectedIndex="{Binding TabPage}">
+            <TabItem Header="" Margin="0,100,0,10" IsEnabled="False">
+            </TabItem>
+
+            <!-- add tab control -->
+            <TabItem Header="TaxonomicProf" Width="100" Height="30" IsSelected="True"
+                            Style="{StaticResource VerticalTab}">
+                <v:AnalysesView x:Name="Analyses1Tab"/>
+            </TabItem>
+            <!-- add tab control -->
+            <TabItem Header="EstimatedFunc" Width="100" Height="30" IsSelected="False"
+                            Style="{StaticResource VerticalTab}">
+                <v:Analyses2View x:Name="Analyses2Tab"/>
+            </TabItem>
+
+        </TabControl>
+
+        <Label Grid.Row="0" Grid.Column="1"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"  Margin="35,0,0,0"
+                    FontStyle="Oblique" FontSize="10" Foreground="DarkGray"
+                    Content="WorldFusion, Co.,Ltd" >
+        </Label>
+
+        <Label Grid.Row="0" Grid.Column="1"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"  Margin="145,0,0,0"
+                    FontStyle="Oblique" FontSize="10" Foreground="DarkGray"
+                    Content="{Binding Version}">
+        </Label>
+
+        <GridSplitter Grid.Row="1" Grid.Column="0" 
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                      Height="5" />
+
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="5,3,7,1" x:Name="LogLocation">
+        </ScrollViewer>
+
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="50,5,10,0"
+                    Content="information" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <l:LivetCallMethodAction MethodName="OpenInformation" MethodTarget="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <TextBox  Grid.Row="2" Grid.Column="0" Margin="5,3,7,1" x:Name="LogTextbox"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                Background="#eaf4fc" 
+                BorderBrush="#eaf4fc" 
+                VerticalScrollBarVisibility="Visible" 
+                Text="{Binding LogMessage, Mode=TwoWay}"/>
+    </Grid>
+    <!-- / -->
+</Window>

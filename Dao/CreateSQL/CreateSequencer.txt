@@ -1,0 +1,17 @@
+﻿DROP TABLE IF EXISTS Sequencer;
+CREATE TABLE Sequencer		(
+Id INTEGER PRIMARY KEY AUTOINCREMENT,
+Name	VARCHAR(255)	,
+Note	VARCHAR(255) ,
+DATE  VARCHAR DEFAULT  (DATETIME('now','localtime'))
+);
+
+INSERT INTO Sequencer 
+( Name, Note) 
+values
+( 'MiSeq', 'Init');
+
+INSERT INTO Sequencer 
+(Name, Note) 
+values
+('MinION', 'Init');

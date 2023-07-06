@@ -1,0 +1,197 @@
+﻿<UserControl x:Class="ShotgunMetagenome.Views.Analyses2View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+             xmlns:v ="clr-namespace:ShotgunMetagenome.Views.Behavior"
+             xmlns:local="clr-namespace:ShotgunMetagenome.Views"
+             xmlns:model="clr-namespace:ShotgunMetagenome.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="StyleResouces.xaml" />
+    </UserControl.Resources>
+
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Background="#eae7e7" 
+            HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            　【Estimated functional gene number】<LineBreak/>
+            　Parameter set and analysis file settings<LineBreak/>
+            　Click the [Analysis] button at the bottom right of the screen.
+        </TextBlock>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" >
+            <Grid Background="#eae7e7" Margin="0,5,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="8*" />
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1"/>
+                </Grid.ColumnDefinitions>
+                <!-- parameter                 -->
+                <GroupBox Grid.Column="1" Grid.Row="1" Background="#f9f8eb"
+                    FontSize="24"
+                    Margin="10,0,20,0"
+                    Header="Select target.">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label />
+                            <ComboBox   
+                                    Style="{StaticResource BaseComboBox}"
+                                    AutomationProperties.HelpText="Select dataset." 
+                                    ItemsSource="{Binding MappingReference, Mode=TwoWay}" 
+                                    SelectedIndex="{Binding MappingReferenceIdx, Mode=TwoWay}" 
+                                    ToolTip="{Binding MappingReferenceTooltip, Mode=TwoWay}"  />
+                            <Label />
+                        </StackPanel>
+<!--
+                        <StackPanel Orientation="Horizontal">
+                            <Label Width="10"  Height="20"/>
+                            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,25,0,3"
+                                    Name="createPlots" Content="Create Plots" Width="160" FontSize="16"
+                                    Style="{StaticResource CheckBoxStyle}"
+                                    ToolTip="Valid for 3 or more sample-groups "
+                                    IsChecked="{Binding IsPlots, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <l:LivetCallMethodAction MethodName="OpenPlotsSetting" MethodTarget="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
+                        </StackPanel>
+-->
+                        <StackPanel Orientation="Horizontal">
+                            <Label Width="20" />
+                        </StackPanel>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Sequences -->
+                <GroupBox Grid.Column="1" Grid.Row="2" Background="#f9f8eb"
+                    FontSize="24"
+                    Margin="10,0,20,0"
+                    Header="Sequences."
+                    ToolTip="Click select button, choose your data folder or file.\nOr, drag and drop your data">
+                    <Grid Background="#eae7e7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+
+                            <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="18" FontSize="14"   FontFamily="Meiryo" FontWeight="Bold"
+                                Style="{StaticResource FlatButton}"
+                                Content=" add sequenses ">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <l:LivetCallMethodAction MethodName="OpenAddSequenceGroup" MethodTarget="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Label HorizontalAlignment="Left"  Width="30" Height="30" VerticalAlignment="Top"></Label>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16" FontSize="12"   FontFamily="Meiryo" FontWeight="Regular"
+                                Style="{StaticResource FlatButton}"
+                                Content=" clear"  >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <l:LivetCallMethodAction MethodName="CallSampleTreeClear" MethodTarget="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+
+                        <TreeView Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            x:Name="SampleTree" 
+                            FontSize="12" FontFamily="Meiryo"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                            ItemsSource="{Binding SampleGroups}"
+                            >
+
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType= "model:SampleGroup" ItemsSource="{Binding Sequences}">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <Setter Property="Tag" x:Name="selectedItem"
+                                        Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType=TreeView}}" />
+                                    <Setter Property="IsExpanded" 
+                                        Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    <Setter Property="IsSelected" 
+                                        Value="{Binding IsSelected, Mode=TwoWay}" />
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem
+                                                    Header="Remove">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Click">
+                                                            <l:LivetCallMethodAction 
+                                                                    MethodName="CallRemoveItem" MethodTarget="{Binding}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <i:Interaction.Behaviors>
+                                <v:FileDropBehavior Command="{Binding AddItemsCommand}" />
+                            </i:Interaction.Behaviors>
+                        </TreeView>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+
+        </ScrollViewer>
+
+        <Button Grid.Column="1" Grid.Row="7" Margin="0,0,10,0"
+                Content="{Binding AnalysisButton}" HorizontalAlignment="Right"
+                Style="{StaticResource FlatButton}"
+                IsEnabled="{Binding IsAnalysisExecute }">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <l:FolderBrowserDialogInteractionMessageAction>
+                        <l:DirectInteractionMessage CallbackMethodName="CallAnarysisExecute" CallbackMethodTarget="{Binding}">
+                            <l:FolderSelectionMessage Description="フォルダーの選択" DialogPreference="None" />
+                        </l:DirectInteractionMessage>
+                    </l:FolderBrowserDialogInteractionMessageAction>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+
+        </Button>
+
+    </Grid>
+</UserControl>
