@@ -24,7 +24,7 @@ Recentrifugeを利用したサンバースト図を作成します。
 
 インストーラは分類データベースを同梱しているため7GBのファイルになります。  
 
-https://drive.google.com/file/d/128aOlnrGwBeyV4sDTpzufAT87tvGQqtB/view?usp=sharing
+[https://drive.google.com/file/d/128aOlnrGwBeyV4sDTpzufAT87tvGQqtB/view?usp=sharing](https://drive.google.com/file/d/1w3ZiRxsA4DKMSiithBdaQJg4ZDFnewJ6/view?usp=sharing)
 
   
 
