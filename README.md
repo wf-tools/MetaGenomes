@@ -23,10 +23,8 @@ Recentrifugeを利用したサンバースト図を作成します。
 以下のURLからWindowsインストーラをダウンロードしてインストールします。  
 
 インストーラは分類データベースを同梱しているため7GBのファイルになります。  
+https://drive.google.com/file/d/1iCsOuNMHmydxz_QD1Ohaz6rKOxtMNegW/view?usp=sharing  
 
-[https://drive.google.com/file/d/128aOlnrGwBeyV4sDTpzufAT87tvGQqtB/view?usp=sharing](https://drive.google.com/file/d/1w3ZiRxsA4DKMSiithBdaQJg4ZDFnewJ6/view?usp=sharing)
-
-  
 
 -- 操作  
 
